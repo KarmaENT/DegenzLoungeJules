@@ -1,0 +1,47 @@
+.app-container {
+  @apply min-h-screen flex flex-col;
+}
+
+.app-header {
+  @apply bg-gray-800 text-white p-4 flex justify-between items-center;
+}
+
+.app-header h1 {
+  @apply text-2xl font-bold;
+}
+
+.tab-selector button {
+  @apply px-4 py-2 mx-1 rounded;
+}
+
+.tab-selector button.active {
+  @apply bg-blue-600;
+}
+
+.tab-selector button:not(.active) {
+  @apply bg-gray-700 hover:bg-gray-600;
+}
+
+.app-content {
+  @apply flex-grow p-4;
+}
+
+.sandbox-layout {
+  @apply grid grid-cols-12 gap-4 h-full;
+}
+
+.agent-library {
+  @apply col-span-3 bg-gray-100 p-4 rounded shadow;
+}
+
+.sandbox-workspace {
+  @apply col-span-6 bg-white p-4 rounded shadow;
+}
+
+.agent-settings {
+  @apply col-span-3 bg-gray-100 p-4 rounded shadow;
+}
+
+.persona-mode {
+  @apply bg-white p-4 rounded shadow;
+}

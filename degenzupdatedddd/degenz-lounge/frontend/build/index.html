@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeGeNz Lounge</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="static/enhanced-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>DeGeNz Lounge</h1>
+            <div class="user-menu">
+                <a href="auth/index.html" class="btn btn-primary btn-sm">Login</a>
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+        </header>
+        
+        <nav class="main-nav">
+            <ul class="nav-tabs">
+                <li class="nav-tab active" data-tab="dashboard">Dashboard</li>
+                <li class="nav-tab" data-tab="agent-library">Agent Library</li>
+                <li class="nav-tab" data-tab="sandbox">Sandbox</li>
+                <li class="nav-tab" data-tab="prompt-repository">Prompt Repository</li>
+                <li class="nav-tab" data-tab="settings">Settings</li>
+            </ul>
+        </nav>
+        
+        <main class="app-content">
+            <!-- Dashboard Tab -->
+            <div class="page-container fade-in" id="dashboard-tab">
+                <div class="page-header">
+                    <h2 class="page-title">Dashboard</h2>
+                    <p class="page-description">Welcome to DeGeNz Lounge, your AI Agent Orchestration Platform</p>
+                </div>
+                
+                <div class="page-content">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                        <div class="card p-6">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="bg-primary-100 text-primary-700 p-3 rounded-lg">
+                                    <i class="fas fa-robot text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold">Agent Library</h3>
+                                    <p class="text-sm text-neutral-500">Create and manage AI agents</p>
+                                </div>
+                            </div>
+                            <p class="text-neutral-600 mb-4">Define agents with specific roles, personalities, and instructions to handle various tasks.</p>
+                            <button class="btn btn-primary btn-sm" data-navigate="agent-library">
+                                <i class="fas fa-arrow-right mr-2"></i> Go to Agent Library
+                            </button>
+                        </div>
+                        
+                        <div class="card p-6">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="bg-secondary-100 text-secondary-700 p-3 rounded-lg">
+                                    <i class="fas fa-cubes text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold">Sandbox</h3>
+                                    <p class="text-sm text-neutral-500">Collaborate with multiple agents</p>
+                                </div>
+                            </div>
+                            <p class="text-neutral-600 mb-4">Create sandbox environments where multiple agents can collaborate to solve complex problems.</p>
+                            <button class="btn btn-secondary btn-sm" data-navigate="sandbox">
+                                <i class="fas fa-arrow-right mr-2"></i> Go to Sandbox
+                            </button>
+                        </div>
+                        
+                        <div class="card p-6">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="bg-accent-100 text-accent-700 p-3 rounded-lg">
+                                    <i class="fas fa-lightbulb text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold">Prompt Repository</h3>
+                                    <p class="text-sm text-neutral-500">Save and reuse effective prompts</p>
+                                </div>
+                            </div>
+                            <p class="text-neutral-600 mb-4">Store, categorize, and reuse your most effective prompts for consistent results.</p>
+                            <button class="btn btn-accent btn-sm" data-navigate="prompt-repository">
+                                <i class="fas fa-arrow-right mr-2"></i> Go to Prompt Repository
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="card p-6 mb-8">
+                        <h3 class="text-lg font-semibold mb-4">Recent Activity</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-4 p-3 bg-neutral-50 rounded-lg">
+                                <div class="bg-primary-100 text-primary-700 p-2 rounded-full">
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">Created new agent "Data Scientist"</p>
+                                    <p class="text-sm text-neutral-500">2 hours ago</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-4 p-3 bg-neutral-50 rounded-lg">
+                                <div class="bg-secondary-100 text-secondary-700 p-2 rounded-full">
+                                    <i class="fas fa-comments"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">Sandbox session "Marketing Campaign" completed</p>
+                                    <p class="text-sm text-neutral-500">Yesterday</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-4 p-3 bg-neutral-50 rounded-lg">
+                                <div class="bg-accent-100 text-accent-700 p-2 rounded-full">
+                                    <i class="fas fa-save"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">Saved prompt "Product Description Generator"</p>
+                                    <p class="text-sm text-neutral-500">2 days ago</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Agent Library Tab -->
+            <div class="page-container fade-in hidden" id="agent-library-tab">
+                <div class="page-header">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h2 class="page-title">Agent Library</h2>
+                            <p class="page-description">Create and manage your AI agents</p>
+                        </div>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus mr-2"></i> Create New Agent
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="page-content">
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="flex gap-4">
+                            <div class="relative">
+                                <input type="text" placeholder="Search agents..." class="form-input pl-10 pr-4 py-2">
+                                <i class="fas fa-search absolute left-3 top-3 text-neutral-400"></i>
+                            </div>
+                            <select class="form-select py-2">
+                                <option value="all">All Roles</option>
+                                <option value="researcher">Researcher</option>
+                                <option value="writer">Writer</option>
+                                <option value="analyst">Analyst</option>
+                                <option value="manager">Manager</option>
+                            </select>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="btn btn-sm btn-secondary">
+                                <i class="fas fa-filter mr-2"></i> Filter
+                            </button>
+                            <button class="btn btn-sm btn-secondary">
+                                <i class="fas fa-sort mr-2"></i> Sort
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="agent-grid">
+                        <div class="agent-card">
+                            <div class="agent-card-header">
+                                <div class="agent-card-avatar">DS</div>
+                                <h3 class="agent-card-name">Data Scientist</h3>
+                                <p class="agent-card-role">Analyze datasets and extract insights</p>
+                            </div>
+                            <div class="agent-card-body">
+                                <span class="agent-card-personality">Technical/Precise</span>
+                                <p class="agent-card-description">Specialized in data analysis, statistical modeling, and visualization. Can interpret complex datasets and provide actionable insights.</p>
+                            </div>
+                            <div class="agent-card-footer">
+                                <span class="text-sm text-neutral-500">Created 2 days ago</span>
+                                <div class="agent-card-actions">
+                                    <button class="agent-card-button secondary">Edit</button>
+                                    <button class="agent-card-button primary">Use</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="agent-card">
+                            <div class="agent-card-header">
+                                <div class="agent-card-avatar">CW</div>
+                                <h3 class="agent-card-name">Copywriter</h3>
+                                <p class="agent-card-role">Create compelling content</p>
+                            </div>
+                            <div class="agent-card-body">
+                                <span class="agent-card-personality">Creative</span>
+                                <p class="agent-card-description">Expert in crafting engaging copy for various formats including ads, websites, and social media. Focuses on persuasive messaging that drives action.</p>
+                            </div>
+                            <div class="agent-card-footer">
+                                <span class="text-sm text-neutral-500">Created 1 week ago</span>
+                                <div class="agent-card-actions">
+                                    <button class="agent-card-button secondary">Edit</button>
+                                    <button class="agent-card-button primary">Use</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="agent-card">
+                            <div class="agent-card-header">
+                                <div class="agent-card-avatar">MM</div>
+                                <h3 class="agent-card-name">Marketing Manager</h3>
+                                <p class="agent-card-role">Coordinate marketing efforts</p>
+                            </div>
+                            <div class="agent-card-body">
+                                <span class="agent-card-personality">Strategic</span>
+                                <p class="agent-card-description">Oversees marketing campaigns and coordinates between different specialists. Provides strategic direction and ensures alignment with business goals.</p>
+                            </div>
+                            <div class="agent-card-footer">
+                                <span class="text-sm text-neutral-500">Created 2 weeks ago</span>
+                                <div class="agent-card-actions">
+                                    <button class="agent-card-button secondary">Edit</button>
+                                    <button class="agent-card-button primary">Use</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="agent-card">
+                            <div class="agent-card-header">
+                                <div class="agent-card-avatar">PR</div>
+                                <h3 class="agent-card-name">Product Researcher</h3>
+                                <p class="agent-card-role">Analyze market trends</p>
+                            </div>
+                            <div class="agent-card-body">
+                                <span class="agent-card-personality">Analytical</span>
+                                <p class="agent-card-description">Conducts market research, competitor analysis, and identifies product opportunities. Provides data-driven recommendations for product development.</p>
+                            </div>
+                            <div class="agent-card-footer">
+                                <span class="text-sm text-neutral-500">Created 3 weeks ago</span>
+                                <div class="agent-card-actions">
+                                    <button class="agent-card-button secondary">Edit</button>
+                                    <button class="agent-card-button primary">Use</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sandbox Tab -->
+            <div class="page-container fade-in hidden" id="sandbox-tab">
+                <div class="page-header">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h2 class="page-title">Sandbox</h2>
+                            <p class="page-description">Collaborate with multiple agents in real-time</p>
+                        </div>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus mr-2"></i> New Sandbox Session
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="page-content">
+                    <div class="sandbox-container">
+                        <div class="sandbox-sidebar">
+                            <div class="sandbox-sidebar-header">
+                                <h3 class="sandbox-sidebar-title">Active Agents</h3>
+                            </div>
+                            <div class="sandbox-agents">
+                                <div class="sandbox-agent manager">
+                                    <div class="sandbox-agent-avatar">MM</div>
+                                    <div class="sandbox-agent-info">
+                                        <h4 class="sandbox-agent-name">Marketing Manager</h4>
+                                        <p class="sandbox-agent-role">Manager</p>
+                                    </div>
+                                    <div class="sandbox-agent-actions">
+                                        <button class="sandbox-agent-button">
+                                            <i class="fas fa-cog"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="sandbox-agent">
+                                    <div class="sandbox-agent-avatar">CW</div>
+                                    <div class="sandbox-agent-info">
+                                        <h4 class="sandbox-agent-name">Copywriter</h4>
+                                        <p class="sandbox-agent-role">Content Creator</p>
+                                    </div>
+                                    <div class="sandbox-agent-actions">
+                                        <button class="sandbox-agent-button">
+                                            <i class="fas fa-cog"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="sandbox-agent">
+                                    <div class="sandbox-agent-avatar">DS</div>
+                                    <div class="sandbox-agent-info">
+                                        <h4 class="sandbox-agent-name">Data Scientist</h4>
+                                        <p class="sandbox-agent-role">Analyst</p>
+                                    </div>
+                                    <div class="sandbox-agent-actions">
+                                        <button class="sandbox-agent-button">
+                                            <i class="fas fa-cog"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <button class="btn btn-secondary w-full mt-4">
+                                    <i class="fas fa-plus mr-2"></i> Add Agent
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="sandbox-main">
+                            <div class="sandbox-header">
+                                <h3 class="sandbox-title">Marketing Campaign Planning</h3>
+                                <div class="sandbox-actions">
+                                    <button class="sandbox-button secondary">
+                                        <i class="fas fa-save mr-2"></i> Save Session
+                                    </button>
+                                    <button class="sandbox-button secondary">
+                                        <i class="fas fa-cog mr-2"></i> Settings
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="chat-container">
+                                <div class="messages-container">
+                                    <div class="message user">
+                                        <div class="message-content">
+                                            <div class="message-text">I need to plan a marketing campaign for an eco-friendly shoe brand targeting millennials.</div>
+                                            <div class="message-time">10:30 AM</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="message agent">
+                                        <div class="message-content">
+                                            <div class="message-header">
+                                                <div class="message-avatar">MM</div>
+                                                <div class="message-sender">Marketing Manager</div>
+                                            </div>
+                                            <div class="message-text">I'll coordinate this campaign. Let me assign tasks to our specialists to create a comprehensive plan.</div>
+                                            <div class="message-time">10:31 AM</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="message agent">
+                                        <div class="message-content">
+                                            <div class="message-header">
+                                                <div class="message-avatar">DS</div>
+                                                <div class="message-sender">Data Scientist</div>
+                                            </div>
+                                            <div class="message-text">Based on my analysis, millennials aged 25-34 are most likely to purchase eco-friendly products. They primarily use Instagram and TikTok, with peak engagement between 7-9 PM.</div>
+                                            <div class="message-time">10:33 AM</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="message agent">
+                                        <div class="message-content">
+                                            <div class="message-header">
+                                                <div class="message-avatar">CW</div>
+                                                <div class="message-sender">Copywriter</div>
+                                            </div>
+                                            <div class="message-text">I've drafted some potential slogans for the campaign:<br>
+                                            "Step Lightly, Impact Greatly"<br>
+                                            "Earth-Friendly Footprints"<br>
+                                            "Walk the Green Path"</div>
+                                            <div class="message-time">10:35 AM</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="message-input-container">
+                                    <form class="message-input-form">
+                                        <input type="text" class="message-input" placeholder="Type your message...">
+                                        <button type="submit" class="message-send-button">
+                                            <i class="fas fa-paper-plane"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Prompt Repository Tab -->
+            <div class="page-container fade-in hidden" id="prompt-repository-tab">
+                <div class="page-header">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h2 class="page-title">Prompt Repository</h2>
+                            <p class="page-description">Save and organize your prompts for future use</p>
+                        </div>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus mr-2"></i> Create New Prompt
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="page-content">
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="flex gap-4">
+                            <div class="relative">
+                                <input type="text" placeholder="Search prompts..." class="form-input pl-10 pr-4 py-2">
+                                <i class="fas fa-search absolute left-3 top-3 text-neutral-400"></i>
+                            </div>
+                            <select class="form-select py-2">
+                                <option value="all">All Categories</option>
+                                <option value="marketing">Marketing</option>
+                                <option value="content">Content Creation</option>
+                                <option value="research">Research</option>
+                                <option value="analysis">Data Analysis</option>
+                            </select>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="btn btn-sm btn-secondary">
+                                <i class="fas fa-filter mr-2"></i> Filter
+                            </button>
+                            <button class="btn btn-sm btn-secondary">
+                                <i class="fas fa-sort mr-2"></i> Sort
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="prompt-grid">
+                        <div class="prompt-card">
+                            <div class="prompt-card-header">
+                                <h3 class="prompt-card-title">Marketing Campaign Brief</h3>
+                                <span class="prompt-card-category">Marketing</span>
+                            </div>
+                            <div class="prompt-card-body">
+                                <div class="prompt-card-content">
+                                    Create a comprehensive marketing campaign for [product] targeting [audience]. Include key messaging, channel strategy, timeline, and budget allocation. Consider the unique selling proposition of [product] and how it addresses the needs of [audience].
+                                </div>
+                            </div>
+                            <div class="prompt-card-footer">
+                                <div class="prompt-card-meta">Used 12 times</div>
+                                <div class="prompt-card-actions">
+                                    <button class="prompt-card-button secondary">Edit</button>
+                                    <button class="prompt-card-button primary">Use</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="prompt-card">
+                            <div class="prompt-card-header">
+                                <h3 class="prompt-card-title">Product Description Generator</h3>
+                                <span class="prompt-card-category">Content Creation</span>
+                            </div>
+                            <div class="prompt-card-body">
+                                <div class="prompt-card-content">
+                                    Write a compelling product description for [product name] that highlights its [key features]. The target audience is [audience description]. Include benefits, specifications, and a call to action. Tone should be [tone: professional/casual/enthusiastic].
+                                </div>
+                            </div>
+                            <div class="prompt-card-footer">
+                                <div class="prompt-card-meta">Used 28 times</div>
+                                <div class="prompt-card-actions">
+                                    <button class="prompt-card-button secondary">Edit</button>
+                                    <button class="prompt-card-button primary">Use</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="prompt-card">
+                            <div class="prompt-card-header">
+                                <h3 class="prompt-card-title">Competitor Analysis Framework</h3>
+                                <span class="prompt-card-category">Research</span>
+                            </div>
+                            <div class="prompt-card-body">
+                                <div class="prompt-card-content">
+                                    Conduct a detailed competitor analysis for [company/product] against [list of competitors]. Compare pricing, features, market positioning, strengths, weaknesses, and unique selling propositions. Identify opportunities and threats based on this analysis.
+                                </div>
+                            </div>
+                            <div class="prompt-card-footer">
+                                <div class="prompt-card-meta">Used 15 times</div>
+                                <div class="prompt-card-actions">
+                                    <button class="prompt-card-button secondary">Edit</button>
+                                    <button class="prompt-card-button primary">Use</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="prompt-card">
+                            <div class="prompt-card-header">
+                                <h3 class="prompt-card-title">Data Visualization Request</h3>
+                                <span class="prompt-card-category">Data Analysis</span>
+                            </div>
+                            <div class="prompt-card-body">
+                                <div class="prompt-card-content">
+                                    Analyze the [dataset description] and create appropriate visualizations to highlight [key insights/trends]. Include charts for [specific metrics] and explain the significance of each visualization. Recommend actions based on the data analysis.
+                                </div>
+                            </div>
+                            <div class="prompt-card-footer">
+                                <div class="prompt-card-meta">Used 8 times</div>
+                                <div class="prompt-card-actions">
+                                    <button class="prompt-card-button secondary">Edit</button>
+                                    <button class="prompt-card-button primary">Use</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings Tab -->
+            <div class="page-container fade-in hidden" id="settings-tab">
+                <div class="page-header">
+                    <h2 class="page-title">Settings</h2>
+                    <p class="page-description">Customize your DeGeNz Lounge experience</p>
+                </div>
+                
+                <div class="page-content">
+                    <div class="card p-6 mb-6">
+                        <h3 class="text-lg font-semibold mb-4">Account Settings</h3>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input" value="user@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Username</label>
+                            <input type="text" class="form-input" value="user123">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-input" value="********">
+                        </div>
+                        <button class="btn btn-primary">Save Changes</button>
+                    </div>
+                    
+                    <div class="card p-6 mb-6">
+                        <h3 class="text-lg font-semibold mb-4">Appearance</h3>
+                        <div class="form-group">
+                            <label class="form-label">Theme</label>
+                            <select class="form-select">
+                                <option value="light">Light</option>
+                                <option value="dark">Dark</option>
+                                <option value="system">System Default</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Font Size</label>
+                            <select class="form-select">
+                                <option value="small">Small</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="large">Large</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary">Apply Settings</button>
+                    </div>
+                    
+                    <div class="card p-6">
+                        <h3 class="text-lg font-semibold mb-4">Subscription</h3>
+                        <div class="p-4 bg-primary-50 rounded-lg mb-4">
+                            <div class="flex items-center gap-4">
+                                <div class="bg-primary-100 text-primary-700 p-3 rounded-full">
+                                    <i class="fas fa-crown text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold">Current Plan: Free</h4>
+                                    <p class="text-sm text-neutral-600">3 agents, 1 sandbox, 100 messages/month</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary">Upgrade Plan</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab navigation
+            const tabs = document.querySelectorAll('.nav-tab');
+            const tabContents = document.querySelectorAll('[id$="-tab"]');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Hide all tab contents
+                    tabContents.forEach(content => content.classList.add('hidden'));
+                    
+                    // Show the corresponding tab content
+                    const tabName = this.getAttribute('data-tab');
+                    document.getElementById(`${tabName}-tab`).classList.remove('hidden');
+                });
+            });
+            
+            // Dashboard navigation buttons
+            const navButtons = document.querySelectorAll('[data-navigate]');
+            navButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-navigate');
+                    document.querySelector(`.nav-tab[data-tab="${targetTab}"]`).click();
+                });
+            });
+            
+            // Form submissions
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const input = this.querySelector('input[type="text"]');
+                    if (input && input.value.trim()) {
+                        // In a real app, this would send the message
+                        console.log('Message sent:', input.value);
+                        input.value = '';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

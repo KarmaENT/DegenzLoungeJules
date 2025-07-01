@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeGeNz Lounge - Authentication</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/styles.css">
+    <style>
+        .auth-container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .auth-tabs {
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 1.5rem;
+        }
+        .auth-tab {
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .auth-tab.active {
+            border-bottom: 2px solid #2563eb;
+            color: #2563eb;
+        }
+        .auth-form {
+            margin-bottom: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            transition: border-color 0.2s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        .auth-button {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #2563eb;
+            color: white;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            transition: background-color 0.2s;
+        }
+        .auth-button:hover {
+            background-color: #1d4ed8;
+        }
+        .auth-footer {
+            text-align: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        .auth-link {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        .auth-link:hover {
+            text-decoration: underline;
+        }
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+        }
+        .auth-divider::before,
+        .auth-divider::after {
+            content: "";
+            flex: 1;
+            border-top: 1px solid #e5e7eb;
+        }
+        .auth-divider-text {
+            padding: 0 1rem;
+            color: #6b7280;
+        }
+        .social-buttons {
+            display: flex;
+            gap: 0.75rem;
+        }
+        .social-button {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            background-color: white;
+            transition: background-color 0.2s;
+        }
+        .social-button:hover {
+            background-color: #f9fafb;
+        }
+        .pricing-container {
+            display: none;
+            margin-top: 2rem;
+        }
+        .pricing-title {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        .pricing-plans {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .pricing-plan {
+            flex: 1;
+            min-width: 250px;
+            padding: 1.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            background-color: white;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .pricing-plan:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .pricing-plan.featured {
+            border-color: #3b82f6;
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2);
+        }
+        .plan-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .plan-price {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .plan-price .period {
+            font-size: 0.875rem;
+            font-weight: 400;
+            color: #6b7280;
+        }
+        .plan-features {
+            margin-bottom: 1.5rem;
+        }
+        .plan-feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .plan-feature svg {
+            color: #10b981;
+            margin-right: 0.5rem;
+        }
+        .plan-cta {
+            width: 100%;
+            padding: 0.75rem;
+            text-align: center;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        .plan-cta.primary {
+            background-color: #2563eb;
+            color: white;
+        }
+        .plan-cta.primary:hover {
+            background-color: #1d4ed8;
+        }
+        .plan-cta.secondary {
+            background-color: white;
+            color: #2563eb;
+            border: 1px solid #2563eb;
+        }
+        .plan-cta.secondary:hover {
+            background-color: #eff6ff;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="app-container">
+        <header class="app-header">
+            <h1>DeGeNz Lounge</h1>
+            <div class="tab-selector">
+                <a href="../index.html" class="text-white hover:text-blue-200">Home</a>
+            </div>
+        </header>
+        
+        <main class="app-content py-8">
+            <div class="auth-container">
+                <div class="auth-tabs">
+                    <div class="auth-tab active" id="login-tab">Login</div>
+                    <div class="auth-tab" id="register-tab">Register</div>
+                </div>
+                
+                <div id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="login-email" class="form-label">Email</label>
+                        <input type="email" id="login-email" class="form-input" placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password" class="form-label">Password</label>
+                        <input type="password" id="login-password" class="form-input" placeholder="••••••••">
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="remember-me" class="mr-2">
+                            <label for="remember-me" class="text-sm text-gray-600">Remember me</label>
+                        </div>
+                        <a href="#" class="text-sm text-blue-600 hover:underline">Forgot password?</a>
+                    </div>
+                    <button class="auth-button" id="login-button">Login</button>
+                    
+                    <div class="auth-divider">
+                        <span class="auth-divider-text">Or continue with</span>
+                    </div>
+                    
+                    <div class="social-buttons">
+                        <button class="social-button">Google</button>
+                        <button class="social-button">GitHub</button>
+                    </div>
+                </div>
+                
+                <div id="register-form" class="auth-form" style="display: none;">
+                    <div class="form-group">
+                        <label for="register-name" class="form-label">Full Name</label>
+                        <input type="text" id="register-name" class="form-input" placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email" class="form-label">Email</label>
+                        <input type="email" id="register-email" class="form-input" placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password" class="form-label">Password</label>
+                        <input type="password" id="register-password" class="form-input" placeholder="••••••••">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-confirm-password" class="form-label">Confirm Password</label>
+                        <input type="password" id="register-confirm-password" class="form-input" placeholder="••••••••">
+                    </div>
+                    <div class="flex items-center mb-4">
+                        <input type="checkbox" id="terms" class="mr-2">
+                        <label for="terms" class="text-sm text-gray-600">
+                            I agree to the <a href="#" class="text-blue-600 hover:underline">Terms of Service</a> and <a href="#" class="text-blue-600 hover:underline">Privacy Policy</a>
+                        </label>
+                    </div>
+                    <button class="auth-button" id="register-button">Create Account</button>
+                    
+                    <div class="auth-divider">
+                        <span class="auth-divider-text">Or continue with</span>
+                    </div>
+                    
+                    <div class="social-buttons">
+                        <button class="social-button">Google</button>
+                        <button class="social-button">GitHub</button>
+                    </div>
+                </div>
+                
+                <div class="auth-footer mt-4">
+                    <p id="login-footer">
+                        Don't have an account? <a href="#" class="auth-link" id="go-to-register">Register</a>
+                    </p>
+                    <p id="register-footer" style="display: none;">
+                        Already have an account? <a href="#" class="auth-link" id="go-to-login">Login</a>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="pricing-container" id="pricing-container">
+                <h2 class="pricing-title">Choose Your Plan</h2>
+                <div class="pricing-plans">
+                    <div class="pricing-plan">
+                        <div class="plan-name">Free</div>
+                        <div class="plan-price">$0 <span class="period">/month</span></div>
+                        <div class="plan-features">
+                            <div class="plan-feature">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>3 AI Agents</span>
+                            </div>
+                            <div class="plan-feature">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>1 Sandbox Session</span>
+                            </div>
+                            <div class="plan-feature">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>100 Messages/Month</span>
+                            </div>
+                            <div class="plan-feature text-gray-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                                <span>No Manager Agent</span>
+                            </div>
+                            <div class="plan-feature text-gray-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                                <span>No Agent Export</span>
+                            </div>
+                        </div>
+                        <button class="plan-cta secondary">Get Started</button>
+                    </div>
+                    
+                    <div class="pricing-plan featured">
+                        <div class="plan-name">Pro</div>
+                        <div class="plan-price">$19.99 <span class="period">/month</span></div>
+                        <div class="plan-features">
+                            <div class="plan-feature">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Unlimited AI Agents</span>
+                            </div>
+                            <div class="plan-feature">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>10 Sandbox Sessions</span>
+                            </div>
+                            <div class="plan-feature">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>1,000 Messages/Month</span>
+                            </div>
+                            <div class="plan-feature">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Manager Agent</span>
+                            </div>
+                            <div class="plan-feature">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Agent Export/Import</span>
+                            </div>
+                        </div>
+                        <button class="plan-cta primary">Subscribe Now</button>
+                    </div>
+                    
+                    <div class="pricing-plan">
+                        <div class="plan-name">Enterprise</div>
+                        <div class="plan-price">$49.99 <span class="period">/month</span></div>
+                        <div class="plan-features">
+                            <div class="plan-feature">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Unlimited AI Agents</span>
+                            </div>
+                            <div class="plan-feature">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Unlimited Sandbox Sessions</span>
+                            </div>
+                            <div class="plan-feature">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Unlimited Messages</span>
+                            </div>
+                            <div class="plan-feature">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Advanced Manager Agent</span>
+                            </div>
+                            <div class="plan-feature">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Priority Support</span>
+                            </div>
+                        </div>
+                        <button class="plan-cta secondary">Contact Sales</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        const loginTab = document.getElementById('login-tab');
+        const registerTab = document.getElementById('register-tab');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const loginFooter = document.getElementById('login-footer');
+        const registerFooter = document.getElementById('register-footer');
+        const goToRegister = document.getElementById('go-to-register');
+        const goToLogin = document.getElementById('go-to-login');
+        const pricingContainer = document.getElementById('pricing-container');
+        
+        loginTab.addEventListener('click', function() {
+            loginTab.classList.add('active');
+            registerTab.classList.remove('active');
+            loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
+            loginFooter.style.display = 'block';
+            registerFooter.style.display = 'none';
+        });
+        
+        registerTab.addEventListener('click', function() {
+            registerTab.classList.add('active');
+            loginTab.classList.remove('active');
+            registerForm.style.display = 'block';
+            loginForm.style.display = 'none';
+            registerFooter.style.display = 'block';
+            loginFooter.style.display = 'none';
+        });
+        
+        goToRegister.addEventListener('click', function(e) {
+            e.preventDefault();
+            registerTab.click();
+        });
+        
+        goToLogin.addEventListener('click', function(e) {
+            e.preventDefault();
+            loginTab.click();
+        });
+        
+        // Login button functionality
+        document.getElementById('login-button').addEventListener('click', function() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            if (email && password) {
+                // Simulate successful login
+                alert('Login successful! Redirecting to dashboard...');
+                window.location.href = '../index.html';
+            } else {
+                alert('Please enter both email and password.');
+            }
+        });
+        
+        // Register button functionality
+        document.getElementById('register-button').addEventListener('click', function() {
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+            const terms = document.getElementById('terms').checked;
+            
+            if (name && email && password && confirmPassword) {
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match.');
+                    return;
+                }
+                
+                if (!terms) {
+                    alert('Please agree to the Terms of Service and Privacy Policy.');
+                    return;
+                }
+                
+                // Show pricing plans after successful registration
+                pricingContainer.style.display = 'block';
+                
+                // Scroll to pricing plans
+                pricingContainer.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                alert('Please fill in all fields.');
+            }
+        });
+    </script>
+</body>
+</html>

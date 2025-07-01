@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeGeNz Lounge - Saved Sessions</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/enhanced-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .session-card {
+            border-radius: 0.75rem;
+            border: 1px solid var(--neutral-200);
+            transition: all 0.2s;
+            overflow: hidden;
+        }
+        
+        .session-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-200);
+        }
+        
+        .session-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--neutral-100);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .session-title {
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: var(--neutral-800);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .session-date {
+            font-size: 0.875rem;
+            color: var(--neutral-500);
+        }
+        
+        .session-content {
+            padding: 1rem;
+            min-height: 100px;
+            background-color: var(--neutral-50);
+        }
+        
+        .session-agents {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
+        
+        .session-agent {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            background-color: var(--neutral-100);
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            color: var(--neutral-700);
+        }
+        
+        .agent-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.625rem;
+            color: white;
+        }
+        
+        .agent-researcher {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+        
+        .agent-copywriter {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+        
+        .agent-designer {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+        
+        .agent-manager {
+            background: linear-gradient(135deg, #f1c40f, #f39c12);
+        }
+        
+        .session-preview {
+            font-size: 0.875rem;
+            color: var(--neutral-600);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .session-footer {
+            padding: 0.75rem 1rem;
+            border-top: 1px solid var(--neutral-100);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .session-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.75rem;
+            color: var(--neutral-500);
+        }
+        
+        .session-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .session-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .session-action {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neutral-600);
+            background-color: var(--neutral-100);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .session-action:hover {
+            background-color: var(--primary-100);
+            color: var(--primary-700);
+        }
+        
+        .session-filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .session-filter {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            background-color: var(--neutral-100);
+            font-size: 0.875rem;
+            color: var(--neutral-700);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .session-filter:hover {
+            background-color: var(--neutral-200);
+        }
+        
+        .session-filter.active {
+            background-color: var(--primary-100);
+            color: var(--primary-700);
+        }
+        
+        .session-search {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .session-search input {
+            padding-left: 2.5rem;
+        }
+        
+        .session-search i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neutral-400);
+        }
+        
+        .pro-badge {
+            background: linear-gradient(135deg, #f6d365, #fda085);
+            color: #fff;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        .auto-save-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            background-color: var(--primary-50);
+            border: 1px solid var(--primary-100);
+        }
+        
+        .auto-save-info {
+            flex-grow: 1;
+        }
+        
+        .auto-save-title {
+            font-weight: 500;
+            color: var(--primary-700);
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .auto-save-description {
+            font-size: 0.875rem;
+            color: var(--neutral-600);
+        }
+        
+        .toggle-container {
+            position: relative;
+            display: inline-block;
+            width: 3rem;
+            height: 1.5rem;
+        }
+        
+        .toggle-input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--neutral-300);
+            transition: .4s;
+            border-radius: 1.5rem;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 1.125rem;
+            width: 1.125rem;
+            left: 0.1875rem;
+            bottom: 0.1875rem;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        .toggle-input:checked + .toggle-slider {
+            background-color: var(--primary-600);
+        }
+        
+        .toggle-input:checked + .toggle-slider:before {
+            transform: translateX(1.5rem);
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.25rem;
+            margin-top: 2rem;
+        }
+        
+        .page-item {
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+            background-color: var(--neutral-100);
+            color: var(--neutral-700);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .page-item:hover {
+            background-color: var(--neutral-200);
+        }
+        
+        .page-item.active {
+            background-color: var(--primary-600);
+            color: white;
+        }
+        
+        .page-item.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .empty-state {
+            padding: 3rem;
+            text-align: center;
+            background-color: var(--neutral-50);
+            border-radius: 0.75rem;
+            border: 1px dashed var(--neutral-300);
+        }
+        
+        .empty-icon {
+            font-size: 3rem;
+            color: var(--neutral-300);
+            margin-bottom: 1rem;
+        }
+        
+        .empty-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--neutral-700);
+            margin-bottom: 0.5rem;
+        }
+        
+        .empty-description {
+            color: var(--neutral-500);
+            margin-bottom: 1.5rem;
+        }
+        
+        .upgrade-banner {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            color: white;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .upgrade-icon {
+            font-size: 2.5rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            width: 4rem;
+            height: 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 1rem;
+        }
+        
+        .upgrade-content {
+            flex-grow: 1;
+        }
+        
+        .upgrade-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .upgrade-description {
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+        
+        .upgrade-features {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .upgrade-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .upgrade-feature i {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .upgrade-button {
+            background-color: white;
+            color: #6a11cb;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+        
+        .upgrade-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .save-interval-selector {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .save-interval-option {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            background-color: var(--neutral-100);
+            font-size: 0.75rem;
+            color: var(--neutral-700);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .save-interval-option:hover {
+            background-color: var(--neutral-200);
+        }
+        
+        .save-interval-option.active {
+            background-color: var(--primary-100);
+            color: var(--primary-700);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>DeGeNz Lounge</h1>
+            <div class="user-menu">
+                <a href="../auth/index.html" class="btn btn-primary btn-sm">Login</a>
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+        </header>
+        
+        <nav class="main-nav">
+            <ul class="nav-tabs">
+                <li class="nav-tab" data-tab="dashboard">Dashboard</li>
+                <li class="nav-tab" data-tab="agent-library">Agent Library</li>
+                <li class="nav-tab active" data-tab="sandbox">Sandbox</li>
+                <li class="nav-tab" data-tab="prompt-repository">Prompt Repository</li>
+                <li class="nav-tab" data-tab="settings">Settings</li>
+            </ul>
+        </nav>
+        
+        <main class="app-content">
+            <div class="page-container fade-in">
+                <div class="page-header">
+                    <h2 class="page-title">Saved Sessions <span class="pro-badge">PRO</span></h2>
+                    <p class="page-description">Access and manage your saved sandbox sessions</p>
+                </div>
+                
+                <div class="page-content">
+                    <!-- PRO Feature Banner -->
+                    <div class="upgrade-banner">
+                        <div class="upgrade-icon">
+                            <i class="fas fa-save"></i>
+                        </div>
+                        <div class="upgrade-content">
+                            <h3 class="upgrade-title">You're using a PRO feature!</h3>
+                            <p class="upgrade-description">Session saving is exclusively available to PRO subscribers. Enjoy unlimited saved sessions with auto-save functionality.</p>
+                            <div class="upgrade-features">
+                                <div class="upgrade-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Unlimited sessions</span>
+                                </div>
+                                <div class="upgrade-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Auto-save</span>
+                                </div>
+                                <div class="upgrade-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Export options</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#" class="upgrade-button">Manage Subscription</a>
+                    </div>
+                    
+                    <!-- Auto-Save Toggle -->
+                    <div class="auto-save-toggle">
+                        <div class="auto-save-info">
+                            <div class="auto-save-title">
+                                <i class="fas fa-clock"></i>
+                                <span>Auto-Save Sandbox Sessions</span>
+                            </div>
+                            <div class="auto-save-description">Automatically save your sandbox sessions at regular intervals</div>
+                            <div class="save-interval-selector">
+                                <div class="save-interval-option">1 min</div>
+                                <div class="save-interval-option active">5 min</div>
+                                <div class="save-interval-option">15 min</div>
+                                <div class="save-interval-option">30 min</div>
+                            </div>
+                        </div>
+                        <label class="toggle-container">
+                            <input type="checkbox" class="toggle-input" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <!-- Session Filters and Search -->
+                    <div class="session-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="form-input" placeholder="Search saved sessions...">
+                    </div>
+                    
+                    <div class="session-filters">
+                        <div class="session-filter active">
+                            <i class="fas fa-clock"></i>
+                            <span>Recent</span>
+                        </div>
+                        <div class="session-filter">
+                            <i class="fas fa-star"></i>
+                            <span>Favorites</span>
+                        </div>
+                        <div class="session-filter">
+                            <i class="fas fa-tag"></i>
+                            <span>Tagged</span>
+                        </div>
+                        <div class="session-filter">
+                            <i class="fas fa-calendar"></i>
+                            <span>This Week</span>
+                        </div>
+                        <div class="session-filter">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>This Month</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Session Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Session Card 1 -->
+                        <div class="session-card">
+                            <div class="session-header">
+                                <div class="session-title">
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                    <span>Eco-Friendly Shoe Launch</span>
+                                </div>
+                                <div class="session-date">Today, 2:45 PM</div>
+                            </div>
+                            <div class="session-content">
+                                <div class="session-agents">
+                                    <div class="session-agent">
+                                        <div class="agent-icon agent-manager">M</div>
+                                        <span>Manager</span>
+                                    </div>
+                                    <div class="session-agent">
+                                        <div class="agent-icon agent-researcher">R</div>
+                                        <span>Researcher</span>
+                                    </div>
+                                    <div class="session-agent">
+                                        <div class="agent-icon agent-copywriter">C</div>
+                                        <span>Copywriter</span>
+                                    </div>
+                                    <div class="session-agent">
+                                        <div class="agent-icon agent-designer">D</div>
+                                        <span>Designer</span>
+                                    </div>
+                                </div>
+                                <div class="session-preview">
+                                    Our market analysis shows strong demand for sustainable footwear, with 68% of Gen Z consumers willing to pay a premium for eco-friendly products. Recommended marketing approach: emphasize carbon-neutral manufacturing and recycled materials...
+                                </div>
+                            </div>
+                            <div class="session-footer">
+                                <div class="session-stats">
+                                    <div class="session-stat">
+                                        <i class="fas fa-comment"></i>
+                                        <span>42 messages</span>
+                                    </div>
+                                    <div class="session-stat">
+                                        <i class="fas fa-clock"></i>
+                                        <span>32 min</span>
+                                    </div>
+                                </div>
+                                <div class="session-actions">
+                                    <div class="session-action">
+                                        <i class="fas fa-tag"></i>
+                                    </div>
+                                    <div class="session-action">
+                                        <i class="fas fa-download"></i>
+                                    </div>
+                                    <div class="session-action">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Session Card 2 -->
+                        <div class="session-card">
+                            <div class="session-header">
+                                <div class="session-title">
+                                    <span>Q2 Marketing Strategy</span>
+                                </div>
+                                <div class="session-date">Yesterday, 10:12 AM</div>
+                            </div>
+                            <div class="session-content">
+                                <div class="session-agents">
+                                    <div class="session-agent">
+                                        <div class="agent-icon agent-manager">M</div>
+                                        <span>Manager</span>
+                                    </div>
+                                    <div class="session-agent">
+                                        <div class="agent-icon agent-researcher">R</div>
+                                        <span>Researcher</span>
+                                    </div>
+                                    <div class="session-agent">
+                                        <div class="agent-icon agent-copywriter">C</div>
+                                        <span>Copywriter</span>
+                                    </div>
+                                </div>
+                                <div class="session-preview">
+                                    Based on Q1 performance, we should pivot to video-first content strategy across all platforms. TikTok and Instagram Reels showed 3.2x higher engagement than static posts. Proposed budget allocation: 45% video production, 30% paid social...
+                                </div>
+                            </div>
+                            <div class="session-footer">
+                                <div class="session-stats">
+                                    <div class="session-stat">
+                                        <i class="fas fa-comment"></i>
+                                        <span>37 messages</span>
+                                    </div>
+                                    <div class="session-stat">
+                                        <i class="fas fa-clock"></i>
+                                        <span>28 min</span>
+                                    </div>
+                                </div>
+                                <div class="session-actions">
+                                    <div class="session-action">
+                                        <i class="fas fa-tag"></i>
+                                    </div>
+                                    <div class="session-action">
+                                        <i class="fas fa-download"></i>
+                                    </div>
+                                    <div class="session-action">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Session Card 3 -->
+                        <div class="session-card">
+                            <div class="session-header">
+                                <div class="session-title">
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                    <span>Product Roadmap 2025</span>
+                                </div>
+                                <div class="session-date">Apr 18, 2025</div>
+                            </div>
+                            <div class="session-content">
+                                <div class="session-agents">
+                                    <div class="session-agent">
+                                        <div class="agent-icon agent-manager">M</div>
+                                        <span>Manager</span>
+                                    </div>
+                                    <div class="session-agent">
+                                        <div class="agent-icon agent-researcher">R</div>
+                                        <span>Researcher</span>
+                                    </div>
+                                    <div class="session-agent">
+                                        <div class="agent-icon agent-designer">D</div>
+                                        <span>Designer</span>
+                                    </div>
+                                </div>
+                                <div class="session-preview">
+                                    Priority features for Q1-Q2: AI-powered recommendation engine (est. 6 weeks), redesigned mobile experience (est. 4 weeks), and integration with third-party analytics (est. 3 weeks). Critical path dependencies identified...
+                                </div>
+                            </div>
+                            <div class="session-footer">
+                                <div class="session-stats">
+                                    <div class="session-stat">
+                                        <i class="fas fa-comment"></i>
+                                        <span>56 messages</span>
+                                    </div>
+                                    <div class="session-stat">
+                                        <i class="fas fa-clock"></i>
+                                        <span>45 min</span>
+                                    </div>
+                                </div>
+                                <div class="session-actions">
+                                    <div class="session-action">
+                                        <i class="fas fa-tag"></i>
+                                    </div>
+                                    <div class="session-action">
+                                        <i class="fas fa-download"></i>
+                                    </div>
+                                    <div class="session-action">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Session Card 4 -->
+                        <div class="session-card">
+                            <div class="session-header">
+                                <div class="session-title">
+                                    <span>Content Calendar</span>
+                                </div>
+                                <div class="session-date">Apr 17, 2025</div>
+                            </div>
+                            <div class="session-content">
+                                <div class="session-agents">
+                                    <div class="session-agent">
+                                        <div class="agent-icon agent-manager">M</div>
+                                        <span>Manager</span>
+                                    </div>
+                                    <div class="session-agent">
+                                        <div class="agent-icon agent-copywriter">C</div>
+                                        <span>Copywriter</span>
+                                    </div>
+                                </div>
+                                <div class="session-preview">
+                                    May content themes: Sustainability Week (May 5-11), Tech Innovation Spotlight (May 12-18), Customer Success Stories (May 19-25), and Industry Trends (May 26-31). Each theme includes blog posts, social media content, and email newsletters...
+                                </div>
+                            </div>
+                            <div class="session-footer">
+                                <div class="session-stats">
+                                    <div class="session-stat">
+                                        <i class="fas fa-comment"></i>
+                                        <span>29 messages</span>
+                                    </div>
+                                    <div class="session-stat">
+                                        <i class="fas fa-clock"></i>
+                                        <span>22 min</span>
+                                    </div>
+                                </div>
+                                <div class="session-actions">
+                                    <div class="session-action">
+                                        <i class="fas fa-tag"></i>
+                                    </div>
+                                    <div class="session-action">
+                                        <i class="fas fa-download"></i>
+                                    </div>
+                                    <div class="session-action">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Session Card 5 -->
+                        <div class="session-card">
+                            <div class="session-header">
+                                <div class="session-title">
+                                    <span>Competitor Analysis</span>
+                                </div>
+                                <div class="session-date">Apr 15, 2025</div>
+                            </div>
+                            <div class="session-content">
+                                <div class="session-agents">
+                                    <div class="session-agent">
+                                        <div class="agent-icon agent-manager">M</div>
+                                        <span>Manager</span>
+                                    </div>
+                                    <div class="session-agent">
+                                        <div class="agent-icon agent-researcher">R</div>
+                                        <span>Researcher</span>
+                                    </div>
+                                </div>
+                                <div class="session-preview">
+                                    Top 3 competitors: CompanyX (market share: 28%), CompanyY (market share: 22%), CompanyZ (market share: 15%). Our current position: 18% market share. Key differentiators: pricing strategy, customer service, and product feature set...
+                                </div>
+                            </div>
+                            <div class="session-footer">
+                                <div class="session-stats">
+                                    <div class="session-stat">
+                                        <i class="fas fa-comment"></i>
+                                        <span>48 messages</span>
+                                    </div>
+                                    <div class="session-stat">
+                                        <i class="fas fa-clock"></i>
+                                        <span>37 min</span>
+                                    </div>
+                                </div>
+                                <div class="session-actions">
+                                    <div class="session-action">
+                                        <i class="fas fa-tag"></i>
+                                    </div>
+                                    <div class="session-action">
+                                        <i class="fas fa-download"></i>
+                                    </div>
+                                    <div class="session-action">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Session Card 6 -->
+                        <div class="session-card">
+                            <div class="session-header">
+                                <div class="session-title">
+                                    <span>Website Redesign</span>
+                                </div>
+                                <div class="session-date">Apr 12, 2025</div>
+                            </div>
+                            <div class="session-content">
+                                <div class="session-agents">
+                                    <div class="session-agent">
+                                        <div class="agent-icon agent-manager">M</div>
+                                        <span>Manager</span>
+                                    </div>
+                                    <div class="session-agent">
+                                        <div class="agent-icon agent-designer">D</div>
+                                        <span>Designer</span>
+                                    </div>
+                                    <div class="session-agent">
+                                        <div class="agent-icon agent-copywriter">C</div>
+                                        <span>Copywriter</span>
+                                    </div>
+                                </div>
+                                <div class="session-preview">
+                                    Proposed site architecture: 5 main sections (Home, Products, Solutions, Resources, About). Key improvements: simplified navigation, mobile-first approach, improved conversion paths, and enhanced visual hierarchy...
+                                </div>
+                            </div>
+                            <div class="session-footer">
+                                <div class="session-stats">
+                                    <div class="session-stat">
+                                        <i class="fas fa-comment"></i>
+                                        <span>52 messages</span>
+                                    </div>
+                                    <div class="session-stat">
+                                        <i class="fas fa-clock"></i>
+                                        <span>41 min</span>
+                                    </div>
+                                </div>
+                                <div class="session-actions">
+                                    <div class="session-action">
+                                        <i class="fas fa-tag"></i>
+                                    </div>
+                                    <div class="session-action">
+                                        <i class="fas fa-download"></i>
+                                    </div>
+                                    <div class="session-action">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="pagination">
+                        <div class="page-item disabled">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="page-item active">1</div>
+                        <div class="page-item">2</div>
+                        <div class="page-item">3</div>
+                        <div class="page-item">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Session filters
+            const filters = document.querySelectorAll('.session-filter');
+            filters.forEach(filter => {
+                filter.addEventListener('click', function() {
+                    filters.forEach(f => f.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Save interval options
+            const intervalOptions = document.querySelectorAll('.save-interval-option');
+            intervalOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    intervalOptions.forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Auto-save toggle
+            const autoSaveToggle = document.querySelector('.toggle-input');
+            const saveIntervalSelector = document.querySelector('.save-interval-selector');
+            
+            autoSaveToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    saveIntervalSelector.style.opacity = '1';
+                    saveIntervalSelector.style.pointerEvents = 'auto';
+                } else {
+                    saveIntervalSelector.style.opacity = '0.5';
+                    saveIntervalSelector.style.pointerEvents = 'none';
+                }
+            });
+            
+            // Pagination
+            const pageItems = document.querySelectorAll('.page-item:not(.disabled)');
+            pageItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    pageItems.forEach(p => p.classList.remove('active'));
+                    if (!this.classList.contains('disabled')) {
+                        this.classList.add('active');
+                    }
+                });
+            });
+            
+            // Session actions
+            const sessionActions = document.querySelectorAll('.session-action');
+            sessionActions.forEach(action => {
+                action.addEventListener('click', function() {
+                    const icon = this.querySelector('i');
+                    if (icon.classList.contains('fa-tag')) {
+                        alert('Add tags to this session');
+                    } else if (icon.classList.contains('fa-download')) {
+                        alert('Download session content');
+                    } else if (icon.classList.contains('fa-external-link-alt')) {
+                        window.location.href = '../sandbox/index.html';
+                    }
+                });
+            });
+            
+            // Session cards
+            const sessionCards = document.querySelectorAll('.session-card');
+            sessionCards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Only navigate if not clicking on an action button
+                    if (!e.target.closest('.session-action')) {
+                        window.location.href = '../sandbox/index.html';
+                    }
+                });
+            });
+            
+            // Main navigation
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    if (tabName === 'sandbox') {
+                        // Stay on the current page or go to sandbox index
+                        if (!window.location.href.includes('saved-sessions')) {
+                            window.location.href = '../sandbox/index.html';
+                        }
+                    } else {
+                        window.location.href = '../index.html';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
